@@ -6,12 +6,12 @@ module ChatManager
   module CsvDownloadable
     extend ActiveSupport::Concern
 
-    CSV_HEADERS = ["Chat Title", "Role", "Message Content", "Sent At", "LLM UUID", "Model"].freeze
+    CSV_HEADERS = [ "Chat Title", "Role", "Message Content", "Sent At", "LLM UUID", "Model" ].freeze
 
     def download_csv
       chat = current_user.chats.includes(messages: :prompt_manager_prompt_execution).find_by!(uuid: params[:id])
 
-      csv_data = generate_csv_for_chats([chat])
+      csv_data = generate_csv_for_chats([ chat ])
 
       filename = "chat_#{chat.title.to_s.parameterize.presence || chat.uuid}_#{Date.today}.csv"
       send_data csv_data, filename: filename, type: "text/csv"
@@ -34,7 +34,7 @@ module ChatManager
           chat.ordered_messages.each do |msg|
             pe = msg.prompt_manager_prompt_execution
             content = msg.role == "user" ? pe&.prompt : pe&.response
-            csv << [chat.title, msg.role, content, msg.created_at, chat.llm_uuid, chat.model]
+            csv << [ chat.title, msg.role, content, msg.created_at, chat.llm_uuid, chat.model ]
           end
         end
       end
