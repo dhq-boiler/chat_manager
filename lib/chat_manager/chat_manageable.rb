@@ -13,6 +13,7 @@ module ChatManager
     end
 
     def add_chat(chat)
+      return if chat.nil? || @chats.include?(chat)
       @chats << chat
     end
   end
