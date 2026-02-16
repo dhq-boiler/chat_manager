@@ -12,7 +12,7 @@ module ChatManager
       @active_chat_uuid = uuid
     end
 
-    def push_to_chat(chat)
+    def add_chat(chat)
       @chats << chat
     end
   end
